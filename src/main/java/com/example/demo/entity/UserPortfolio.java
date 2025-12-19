@@ -1,4 +1,3 @@
-// UserPortfolio.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
@@ -8,6 +7,7 @@ import java.time.Instant;
 @Table(name = "user_portfolios",
        uniqueConstraints = @UniqueConstraint(columnNames = {"userId","portfolioName"}))
 public class UserPortfolio {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,13 +25,64 @@ public class UserPortfolio {
     @Column(nullable = false)
     private Boolean active = true;
 
+    public UserPortfolio() {
+    }
+
     @PrePersist
-    public void onCreate() { this.createdAt = Instant.now(); }
+    public void onCreate() {
+        this.createdAt = Instant.now();
+    }
 
     @PreUpdate
-    public void onUpdate() { this.updatedAt = Instant.now(); }
+    public void onUpdate() {
+        this.updatedAt = Instant.now();
+    }
 
-    public UserPortfolio() {}
+    public Long getId() {
+        return id;
+    }
 
-    // getters and setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getPortfolioName() {
+        return portfolioName;
+    }
+
+    public void setPortfolioName(String portfolioName) {
+        this.portfolioName = portfolioName;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }

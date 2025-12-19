@@ -1,4 +1,3 @@
-// RiskThreshold.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
@@ -6,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "risk_thresholds")
 public class RiskThreshold {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +22,46 @@ public class RiskThreshold {
     @Column(nullable = false)
     private Boolean active = true;
 
-    public RiskThreshold() {}
+    public RiskThreshold() {
+    }
 
-    // getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getThresholdName() {
+        return thresholdName;
+    }
+
+    public void setThresholdName(String thresholdName) {
+        this.thresholdName = thresholdName;
+    }
+
+    public Double getMaxSingleStockPercentage() {
+        return maxSingleStockPercentage;
+    }
+
+    public void setMaxSingleStockPercentage(Double maxSingleStockPercentage) {
+        this.maxSingleStockPercentage = maxSingleStockPercentage;
+    }
+
+    public Double getMaxSectorPercentage() {
+        return maxSectorPercentage;
+    }
+
+    public void setMaxSectorPercentage(Double maxSectorPercentage) {
+        this.maxSectorPercentage = maxSectorPercentage;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }

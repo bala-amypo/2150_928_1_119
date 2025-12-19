@@ -1,4 +1,3 @@
-// Stock.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
@@ -6,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "stocks")
 public class Stock {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +22,46 @@ public class Stock {
     @Column(nullable = false)
     private Boolean active = true;
 
-    public Stock() {}
+    public Stock() {
+    }
 
-    // getters and setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTicker() {
+        return ticker;
+    }
+
+    public void setTicker(String ticker) {
+        this.ticker = ticker;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }
