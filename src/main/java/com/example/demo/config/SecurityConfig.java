@@ -40,9 +40,11 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html")
-                        .permitAll()
+                            .permitAll()
                         .requestMatchers("/api/stocks/**").permitAll()
                         .requestMatchers("/api/risk-thresholds/**").permitAll()
+                        .requestMatchers("/api/portfolios/**").permitAll()   // newly allowed
+                        .requestMatchers("/api/holdings/**").permitAll()     // newly allowed
                         .requestMatchers("/api/**").authenticated()
                 );
 
@@ -54,7 +56,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // THIS is the bean Spring is asking for
         return new BCryptPasswordEncoder();
     }
 
