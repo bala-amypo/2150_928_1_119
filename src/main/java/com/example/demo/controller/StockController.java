@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/controller/StockController.java
 package com.example.demo.controller;
 
 import com.example.demo.entity.Stock;
@@ -24,23 +23,27 @@ public class StockController {
         return stockService.createStock(stock);
     }
 
-    @PutMapping("/{id}")
-    public Stock update(@PathVariable Long id, @RequestBody Stock stock) {
-        return stockService.updateStock(id, stock);
+    // Update by companyName
+    @PutMapping("/company/{companyName}")
+    public Stock update(@PathVariable String companyName, @RequestBody Stock stock) {
+        return stockService.updateStockByCompanyName(companyName, stock);
     }
 
-    @GetMapping("/{id}")
-    public Stock getById(@PathVariable Long id) {
-        return stockService.getStockById(id);
+    // Get by companyName
+    @GetMapping("/company/{companyName}")
+    public Stock getByCompanyName(@PathVariable String companyName) {
+        return stockService.getStockByCompanyName(companyName);
     }
 
+    // Get all
     @GetMapping
     public List<Stock> getAll() {
         return stockService.getAllStocks();
     }
 
-    @PutMapping("/{id}/deactivate")
-    public Stock deactivate(@PathVariable Long id) {
-        return stockService.deactivateStock(id);
+    // Deactivate by companyName
+    @PutMapping("/company/{companyName}/deactivate")
+    public Stock deactivate(@PathVariable String companyName) {
+        return stockService.deactivateStockByCompanyName(companyName);
     }
 }
