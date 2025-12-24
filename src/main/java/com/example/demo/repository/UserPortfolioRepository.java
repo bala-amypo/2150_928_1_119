@@ -1,12 +1,50 @@
-// UserPortfolioRepository.java
-package com.example.demo.repository;
+package com.example.demo.controller;
 
 import com.example.demo.model.UserPortfolio;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.service.UserPortfolioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public interface UserPortfolioRepository extends JpaRepository<UserPortfolio, Long> {
-    // required by spec
-    List<UserPortfolio> findByUserId(Long userId);
+@RestController
+@RequestMapping("/api")
+@Tag(name = "Portfolios")
+public class UserPortfolioController {
+
+    private final UserPortfolioService portfolioService;
+
+    public UserPortfolioController(UserPortfolioService portfolioService) {
+        this.portfolioService = portfolioService;
+    }
+
+    // used by tests: createPortfolio(UserPortfolio)
+    @PostMapping("/portfolios")
+    public ResponseEntity<UserPortfolio> createPortfolio(@RequestBody UserPortfolio portfolio) {
+        return ResponseEntity.ok(portfolioService.createPortfolio(portfolio));
+    }
+
+    // used by tests: getPortfolio(long)
+    @GetMapping("/portfolios/{id}")
+    public ResponseEntity<UserPortfolio> getPortfolio(@PathVariable long id) {
+        return ResponseEntity.ok(portfolioService.getPortfolio(id));
+    }
+
+    // existing extra endpoints can remain:
+    @PutMapping("/portfolios/{id}")
+    public UserPortfolio update(@PathVariable Long id,
+                                @RequestBody UserPortfolio portfolio) {
+        return portfolioService.updatePortfolio(id, portfolio);
+    }
+
+    @GetMapping("/portfolios/user/{userId}")
+    public List<UserPortfolio> getByUser(@PathVariable Long userId) {
+        return portfolioService.getPortfoliosByUser(userId);
+    }
+
+    @PutMapping("/portfolios/{id}/deactivate")
+    public UserPortfolio deactivate(@PathVariable Long id) {
+        return portfolioService.deactivatePortfolio(id);
+    }
 }
