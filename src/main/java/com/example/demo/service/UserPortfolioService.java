@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.UserPortfolio;
+import com.example.demo.model.UserPortfolio;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserPortfolioRepository;
 import org.springframework.stereotype.Service;

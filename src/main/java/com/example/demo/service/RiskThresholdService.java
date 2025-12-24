@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.RiskThreshold;
+import com.example.demo.model.RiskThreshold;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.RiskThresholdRepository;
 import org.springframework.stereotype.Service;

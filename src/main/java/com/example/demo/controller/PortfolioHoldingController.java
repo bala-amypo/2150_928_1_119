@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.PortfolioHolding;
+import com.example.demo.model.PortfolioHolding;
 import com.example.demo.service.PortfolioHoldingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;

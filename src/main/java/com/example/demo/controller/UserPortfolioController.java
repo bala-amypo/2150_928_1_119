@@ -1,7 +1,7 @@
 // src/main/java/com/example/demo/controller/UserPortfolioController.java
 package com.example.demo.controller;
 
-import com.example.demo.entity.UserPortfolio;
+import com.example.demo.model.UserPortfolio;
 import com.example.demo.service.UserPortfolioService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;

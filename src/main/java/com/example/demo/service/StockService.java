@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Stock;
+import com.example.demo.model.Stock;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.StockRepository;
 import org.springframework.stereotype.Service;
