@@ -1,11 +1,13 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "user_portfolios",
-       uniqueConstraints = @UniqueConstraint(columnNames = {"userId","portfolioName"}))
+@Table(
+    name = "user_portfolios",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"userId","portfolioName"})
+)
 public class UserPortfolio {
 
     @Id
@@ -38,51 +40,27 @@ public class UserPortfolio {
         this.updatedAt = Instant.now();
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getUserId() {
-        return userId;
-    }
+    public Long getUserId() { return userId; }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    public void setUserId(Long userId) { this.userId = userId; }
 
-    public String getPortfolioName() {
-        return portfolioName;
-    }
+    public String getPortfolioName() { return portfolioName; }
 
-    public void setPortfolioName(String portfolioName) {
-        this.portfolioName = portfolioName;
-    }
+    public void setPortfolioName(String portfolioName) { this.portfolioName = portfolioName; }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
+    public Instant getCreatedAt() { return createdAt; }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
+    public Instant getUpdatedAt() { return updatedAt; }
 
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
 
-    public Boolean getActive() {
-        return active;
-    }
+    public Boolean getActive() { return active; }
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+    public void setActive(Boolean active) { this.active = active; }
 }
