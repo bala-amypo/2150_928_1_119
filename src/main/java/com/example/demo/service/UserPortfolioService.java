@@ -28,7 +28,11 @@ public class UserPortfolioService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    // Existing methods
+    // Test still calls this: getPortfolioById(long)
+    public UserPortfolio getPortfolioById(long id) {
+        return getPortfolio(id);
+    }
+
     public UserPortfolio updatePortfolio(Long id, UserPortfolio portfolio) {
         UserPortfolio existing = getPortfolio(id);
         existing.setPortfolioName(portfolio.getPortfolioName());

@@ -24,7 +24,7 @@ public class JwtUtil {
         this.validityInMs = validityInMs;
     }
 
-    // original simple token
+    // existing simple token
     public String generateToken(String username) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + validityInMs);
@@ -73,7 +73,7 @@ public class JwtUtil {
         }
     }
 
-    // Backward-compatible name
+    // keep old name delegating
     public boolean validate(String token) {
         return validateToken(token);
     }
@@ -95,11 +95,11 @@ public class JwtUtil {
 
     // Test expects: extractUserId(String)
     public long extractUserId(String token) {
-        Object id = Jwts.parser()
+        Object userId = Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody()
                 .get("userId");
-        return id != null ? Long.parseLong(id.toString()) : 0L;
+        return userId != null ? Long.parseLong(userId.toString()) : 0L;
     }
 }

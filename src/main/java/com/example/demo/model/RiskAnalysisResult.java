@@ -24,7 +24,7 @@ public class RiskAnalysisResult {
     private Double highestSectorPercentage;
 
     @Column(nullable = false)
-    private Boolean highRisk;   // renamed backing field
+    private Boolean highRisk;
 
     @Column(length = 500)
     private String notes;
@@ -60,7 +60,7 @@ public class RiskAnalysisResult {
 
     public void setNotes(String notes) { this.notes = notes; }
 
-    // Test expects: setHighRisk(boolean) and method reference isHighRisk
+    // Test expects: isHighRisk() + setHighRisk(boolean)
     public Boolean isHighRisk() {
         return highRisk;
     }
@@ -69,7 +69,7 @@ public class RiskAnalysisResult {
         this.highRisk = highRisk;
     }
 
-    // Optional: keep old getters for compatibility
+    // Optional compatibility
     public Boolean getIsHighRisk() {
         return highRisk;
     }

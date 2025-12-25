@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.UserPortfolio;
 import com.example.demo.service.UserPortfolioService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,19 +19,19 @@ public class UserPortfolioController {
         this.portfolioService = portfolioService;
     }
 
-    // Test expects: createPortfolio(UserPortfolio)
+    // Test expects: createPortfolio(UserPortfolio) -> ResponseEntity<UserPortfolio>
     @PostMapping("/portfolios")
-    public UserPortfolio createPortfolio(@RequestBody UserPortfolio portfolio) {
-        return portfolioService.createPortfolio(portfolio);
+    public ResponseEntity<UserPortfolio> createPortfolio(@RequestBody UserPortfolio portfolio) {
+        return ResponseEntity.ok(portfolioService.createPortfolio(portfolio));
     }
 
-    // Test expects: getPortfolio(long)
+    // Test expects: getPortfolio(long) -> ResponseEntity<UserPortfolio>
     @GetMapping("/portfolios/{id}")
-    public UserPortfolio getPortfolio(@PathVariable long id) {
-        return portfolioService.getPortfolio(id);
+    public ResponseEntity<UserPortfolio> getPortfolio(@PathVariable long id) {
+        return ResponseEntity.ok(portfolioService.getPortfolio(id));
     }
 
-    // Existing extra endpoints can remain
+    // Existing endpoints (you can keep these):
     @PutMapping("/portfolios/{id}")
     public UserPortfolio update(@PathVariable Long id,
                                 @RequestBody UserPortfolio portfolio) {
