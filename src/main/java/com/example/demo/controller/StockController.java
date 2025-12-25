@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/stocks")
+@RequestMapping("/api")
 @Tag(name = "Stocks")
 public class StockController {
 
@@ -18,32 +18,35 @@ public class StockController {
         this.stockService = stockService;
     }
 
-    @PostMapping
-    public Stock create(@RequestBody Stock stock) {
+    // Test expects: createStock(Stock)
+    @PostMapping("/stocks")
+    public Stock createStock(@RequestBody Stock stock) {
         return stockService.createStock(stock);
     }
 
-    // Update by companyName
-    @PutMapping("/company/{companyName}")
-    public Stock update(@PathVariable String companyName, @RequestBody Stock stock) {
-        return stockService.updateStockByCompanyName(companyName, stock);
+    // Test expects: updateStock(long, Stock)
+    @PutMapping("/stocks/{id}")
+    public Stock updateStock(@PathVariable long id, @RequestBody Stock stock) {
+        return stockService.updateStock(id, stock);
     }
 
-    // Get by companyName
-    @GetMapping("/company/{companyName}")
-    public Stock getByCompanyName(@PathVariable String companyName) {
-        return stockService.getStockByCompanyName(companyName);
+    // Test expects: getStock(long)
+    @GetMapping("/stocks/{id}")
+    public Stock getStock(@PathVariable long id) {
+        return stockService.getStockById(id);
     }
 
-    // Get all
-    @GetMapping
-    public List<Stock> getAll() {
+    // Test expects: getAllStocks()
+    @GetMapping("/stocks")
+    public List<Stock> getAllStocks() {
         return stockService.getAllStocks();
     }
 
-    // Deactivate by companyName
-    @PutMapping("/company/{companyName}/deactivate")
-    public Stock deactivate(@PathVariable String companyName) {
-        return stockService.deactivateStockByCompanyName(companyName);
+    // Test expects: deactivateStock(long)
+    @PutMapping("/stocks/{id}/deactivate")
+    public void deactivateStock(@PathVariable long id) {
+        stockService.deactivateStock(id);
     }
+
+    // You can optionally keep your companyName endpoints as extra methods.
 }

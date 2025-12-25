@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/controller/UserPortfolioController.java
 package com.example.demo.controller;
 
 import com.example.demo.model.UserPortfolio;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/portfolios")
+@RequestMapping("/api")
 @Tag(name = "Portfolios")
 public class UserPortfolioController {
 
@@ -19,28 +18,31 @@ public class UserPortfolioController {
         this.portfolioService = portfolioService;
     }
 
-    @PostMapping
-    public UserPortfolio create(@RequestBody UserPortfolio portfolio) {
+    // Test expects: createPortfolio(UserPortfolio)
+    @PostMapping("/portfolios")
+    public UserPortfolio createPortfolio(@RequestBody UserPortfolio portfolio) {
         return portfolioService.createPortfolio(portfolio);
     }
 
-    @PutMapping("/{id}")
+    // Test expects: getPortfolio(long)
+    @GetMapping("/portfolios/{id}")
+    public UserPortfolio getPortfolio(@PathVariable long id) {
+        return portfolioService.getPortfolio(id);
+    }
+
+    // Existing extra endpoints can remain
+    @PutMapping("/portfolios/{id}")
     public UserPortfolio update(@PathVariable Long id,
                                 @RequestBody UserPortfolio portfolio) {
         return portfolioService.updatePortfolio(id, portfolio);
     }
 
-    @GetMapping("/{id}")
-    public UserPortfolio getById(@PathVariable Long id) {
-        return portfolioService.getPortfolioById(id);
-    }
-
-    @GetMapping("/user/{userId}")
+    @GetMapping("/portfolios/user/{userId}")
     public List<UserPortfolio> getByUser(@PathVariable Long userId) {
         return portfolioService.getPortfoliosByUser(userId);
     }
 
-    @PutMapping("/{id}/deactivate")
+    @PutMapping("/portfolios/{id}/deactivate")
     public UserPortfolio deactivate(@PathVariable Long id) {
         return portfolioService.deactivatePortfolio(id);
     }
