@@ -19,22 +19,19 @@ public class UserPortfolioController {
         this.portfolioService = portfolioService;
     }
 
-    // Test expects: createPortfolio(UserPortfolio) -> ResponseEntity<UserPortfolio>
     @PostMapping("/portfolios")
     public ResponseEntity<UserPortfolio> createPortfolio(@RequestBody UserPortfolio portfolio) {
         return ResponseEntity.ok(portfolioService.createPortfolio(portfolio));
     }
 
-    // Test expects: getPortfolio(long) -> ResponseEntity<UserPortfolio>
+    // ✅ FIXED: Test calls this - must use getPortfolioById to throw RuntimeException
     @GetMapping("/portfolios/{id}")
     public ResponseEntity<UserPortfolio> getPortfolio(@PathVariable long id) {
-        return ResponseEntity.ok(portfolioService.getPortfolio(id));
+        return ResponseEntity.ok(portfolioService.getPortfolioById(id));
     }
 
-    // Existing endpoints (you can keep these):
     @PutMapping("/portfolios/{id}")
-    public UserPortfolio update(@PathVariable Long id,
-                                @RequestBody UserPortfolio portfolio) {
+    public UserPortfolio update(@PathVariable Long id, @RequestBody UserPortfolio portfolio) {
         return portfolioService.updatePortfolio(id, portfolio);
     }
 
