@@ -6,6 +6,8 @@ import io.jsonwebtoken.JwtException;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
@@ -13,7 +15,6 @@ public class JwtUtil {
     private final String secret;
     private final long validityInMs;
 
-    // required constructor: JwtUtil(String secret, long validityInMs)
     public JwtUtil() {
         this("change-me-secret", 3600000L); // default 1 hour
     }
@@ -23,12 +24,31 @@ public class JwtUtil {
         this.validityInMs = validityInMs;
     }
 
+    // original simple token
     public String generateToken(String username) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + validityInMs);
 
         return Jwts.builder()
                 .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+    }
+
+    // Test expects: generateToken(email, role, userId)
+    public String generateToken(String email, String role, long userId) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + validityInMs);
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
+        claims.put("userId", userId);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(email)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(SignatureAlgorithm.HS256, secret)
@@ -43,12 +63,43 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    public boolean validate(String token) {
+    // Test expects: validateToken(String)
+    public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException ex) {
             return false;
         }
+    }
+
+    // Backward-compatible name
+    public boolean validate(String token) {
+        return validateToken(token);
+    }
+
+    // Test expects: extractEmail(String)
+    public String extractEmail(String token) {
+        return getUsername(token);
+    }
+
+    // Test expects: extractRole(String)
+    public String extractRole(String token) {
+        Object role = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role");
+        return role != null ? role.toString() : null;
+    }
+
+    // Test expects: extractUserId(String)
+    public long extractUserId(String token) {
+        Object id = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody()
+                .get("userId");
+        return id != null ? Long.parseLong(id.toString()) : 0L;
     }
 }

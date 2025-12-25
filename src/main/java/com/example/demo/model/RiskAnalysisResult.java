@@ -24,7 +24,7 @@ public class RiskAnalysisResult {
     private Double highestSectorPercentage;
 
     @Column(nullable = false)
-    private Boolean isHighRisk;
+    private Boolean highRisk;   // renamed backing field
 
     @Column(length = 500)
     private String notes;
@@ -46,17 +46,35 @@ public class RiskAnalysisResult {
 
     public Double getHighestStockPercentage() { return highestStockPercentage; }
 
-    public void setHighestStockPercentage(Double highestStockPercentage) { this.highestStockPercentage = highestStockPercentage; }
+    public void setHighestStockPercentage(Double highestStockPercentage) {
+        this.highestStockPercentage = highestStockPercentage;
+    }
 
     public Double getHighestSectorPercentage() { return highestSectorPercentage; }
 
-    public void setHighestSectorPercentage(Double highestSectorPercentage) { this.highestSectorPercentage = highestSectorPercentage; }
-
-    public Boolean getIsHighRisk() { return isHighRisk; }
-
-    public void setIsHighRisk(Boolean highRisk) { isHighRisk = highRisk; }
+    public void setHighestSectorPercentage(Double highestSectorPercentage) {
+        this.highestSectorPercentage = highestSectorPercentage;
+    }
 
     public String getNotes() { return notes; }
 
     public void setNotes(String notes) { this.notes = notes; }
+
+    // Test expects: setHighRisk(boolean) and method reference isHighRisk
+    public Boolean isHighRisk() {
+        return highRisk;
+    }
+
+    public void setHighRisk(Boolean highRisk) {
+        this.highRisk = highRisk;
+    }
+
+    // Optional: keep old getters for compatibility
+    public Boolean getIsHighRisk() {
+        return highRisk;
+    }
+
+    public void setIsHighRisk(Boolean isHighRisk) {
+        this.highRisk = isHighRisk;
+    }
 }

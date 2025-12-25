@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Stock;
 import com.example.demo.service.StockService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,35 +19,37 @@ public class StockController {
         this.stockService = stockService;
     }
 
-    // Test expects: createStock(Stock)
+    // Test expects: createStock(Stock) -> ResponseEntity<Stock>
     @PostMapping("/stocks")
-    public Stock createStock(@RequestBody Stock stock) {
-        return stockService.createStock(stock);
+    public ResponseEntity<Stock> createStock(@RequestBody Stock stock) {
+        return ResponseEntity.ok(stockService.createStock(stock));
     }
 
-    // Test expects: updateStock(long, Stock)
+    // Test expects: updateStock(long, Stock) -> ResponseEntity<Stock>
     @PutMapping("/stocks/{id}")
-    public Stock updateStock(@PathVariable long id, @RequestBody Stock stock) {
-        return stockService.updateStock(id, stock);
+    public ResponseEntity<Stock> updateStock(@PathVariable long id,
+                                             @RequestBody Stock stock) {
+        return ResponseEntity.ok(stockService.updateStock(id, stock));
     }
 
-    // Test expects: getStock(long)
+    // Test expects: getStock(long) -> ResponseEntity<Stock>
     @GetMapping("/stocks/{id}")
-    public Stock getStock(@PathVariable long id) {
-        return stockService.getStockById(id);
+    public ResponseEntity<Stock> getStock(@PathVariable long id) {
+        return ResponseEntity.ok(stockService.getStockById(id));
     }
 
-    // Test expects: getAllStocks()
+    // Test expects: getAllStocks() -> ResponseEntity<List<Stock>>
     @GetMapping("/stocks")
-    public List<Stock> getAllStocks() {
-        return stockService.getAllStocks();
+    public ResponseEntity<List<Stock>> getAllStocks() {
+        return ResponseEntity.ok(stockService.getAllStocks());
     }
 
-    // Test expects: deactivateStock(long)
+    // Test expects: deactivateStock(long) -> ResponseEntity<Void>
     @PutMapping("/stocks/{id}/deactivate")
-    public void deactivateStock(@PathVariable long id) {
+    public ResponseEntity<Void> deactivateStock(@PathVariable long id) {
         stockService.deactivateStock(id);
+        return ResponseEntity.noContent().build();
     }
 
-    // You can optionally keep your companyName endpoints as extra methods.
+    // Optional: you can re-add companyName-based endpoints if you need them
 }
