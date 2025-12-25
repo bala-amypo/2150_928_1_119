@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.Instant;
+import java.sql.Timestamp;  // CHANGED: was Instant
 
 @Entity
 @Table(name = "risk_analysis_results")
@@ -15,7 +15,7 @@ public class RiskAnalysisResult {
     private UserPortfolio portfolio;
 
     @Column(nullable = false)
-    private Instant analysisDate = Instant.now();
+    private Timestamp analysisDate = new Timestamp(System.currentTimeMillis());  // CHANGED: Instant -> Timestamp
 
     @Column(nullable = false)
     private Double highestStockPercentage;
@@ -40,9 +40,11 @@ public class RiskAnalysisResult {
 
     public void setPortfolio(UserPortfolio portfolio) { this.portfolio = portfolio; }
 
-    public Instant getAnalysisDate() { return analysisDate; }
+    public Timestamp getAnalysisDate() { return analysisDate; }  // CHANGED: Instant -> Timestamp
 
-    public void setAnalysisDate(Instant analysisDate) { this.analysisDate = analysisDate; }
+    public void setAnalysisDate(Timestamp analysisDate) {        // CHANGED: Instant -> Timestamp
+        this.analysisDate = analysisDate;
+    }
 
     public Double getHighestStockPercentage() { return highestStockPercentage; }
 

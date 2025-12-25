@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;  // CHANGED: was Instant
 
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -23,7 +23,7 @@ public class User {
     private String role = "MONITOR";
 
     @Column(nullable = false, updatable = false)
-    private Instant createdAt = Instant.now();
+    private LocalDateTime createdAt = LocalDateTime.now();  // CHANGED: Instant -> LocalDateTime
 
     public User() {
     }
@@ -48,7 +48,9 @@ public class User {
 
     public void setRole(String role) { this.role = role; }
 
-    public Instant getCreatedAt() { return createdAt; }
+    public LocalDateTime getCreatedAt() { return createdAt; }  // CHANGED: Instant -> LocalDateTime
 
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) {       // CHANGED: Instant -> LocalDateTime
+        this.createdAt = createdAt;
+    }
 }
