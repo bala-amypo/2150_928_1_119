@@ -260,7 +260,7 @@ public class PortfolioRiskAnalyzerTest {
     @Test(priority = 28)
     public void testCreatedAtAutoPopulate() {
         User u = new User();
-        u.setCreatedAt(Instant.now());
+        u.setCreatedAt(LocalDateTime.now());
         Assert.assertNotNull(u.getCreatedAt());
     }
 
