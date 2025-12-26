@@ -34,17 +34,21 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // completely public endpoints (Swagger + auth)
                         .requestMatchers(
-                                "/auth/**",
+                                "/auth/login",
+                                "/auth/register",
                                 "/status",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html")
-                            .permitAll()
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        // your API endpoints that are open in the assignment
                         .requestMatchers("/api/stocks/**").permitAll()
                         .requestMatchers("/api/risk-thresholds/**").permitAll()
-                        .requestMatchers("/api/portfolios/**").permitAll()   // newly allowed
-                        .requestMatchers("/api/holdings/**").permitAll()     // newly allowed
+                        .requestMatchers("/api/portfolios/**").permitAll()
+                        .requestMatchers("/api/holdings/**").permitAll()
+                        // any other /api/** requires JWT
                         .requestMatchers("/api/**").authenticated()
                 );
 
