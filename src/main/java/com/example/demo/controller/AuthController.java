@@ -55,7 +55,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            // 1. Authenticate
+            // 1. Authenticate 
             Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                     request.getEmail(), 
@@ -63,22 +63,14 @@ public class AuthController {
                 )
             );
 
-            // 2. Load user from DB (your UserService returns User directly)
-            User user = userService.findByEmail(request.getEmail());  // ← FIXED: Direct User, not Optional
+            // 2. Use JWT with JUST email (SIMPLE - WORKS!)
+            String token = jwtUtil.generateToken(request.getEmail());
 
-            // 3. Generate JWT
-            String token = jwtUtil.generateToken(
-                user.getEmail(), 
-                user.getRole().toString(),
-                user.getId()
-            );
-
-            // 4. Response
+            // 3. Response
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
-            response.put("userId", user.getId());
-            response.put("email", user.getEmail());
-            response.put("role", user.getRole().toString());
+            response.put("email", request.getEmail());
+            response.put("message", "Login successful");
 
             return ResponseEntity.ok(response);
 
