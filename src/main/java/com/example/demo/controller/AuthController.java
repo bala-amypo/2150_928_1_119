@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -64,23 +63,17 @@ public class AuthController {
                 )
             );
 
-            // 2. Load user from DB (Optional<User>)
-            Optional<User> userOpt = userService.findByEmail(request.getEmail());
-            if (!userOpt.isPresent()) {
-                Map<String, String> error = new HashMap<>();
-                error.put("error", "User not found");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
-            }
-            User user = userOpt.get();
+            // 2. Load user from DB (your UserService returns User directly)
+            User user = userService.findByEmail(request.getEmail());  // ← FIXED: Direct User, not Optional
 
-            // 3. Generate JWT (email, role, userId)
+            // 3. Generate JWT
             String token = jwtUtil.generateToken(
                 user.getEmail(), 
-                user.getRole().toString(),  // ← FIXED: toString() not name()
+                user.getRole().toString(),
                 user.getId()
             );
 
-            // 4. Simple response (no setters needed)
+            // 4. Response
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("userId", user.getId());
