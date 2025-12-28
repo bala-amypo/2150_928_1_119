@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/controller/AuthController.java
 package com.example.demo.controller;
 
 import com.example.demo.dto.AuthResponse;
@@ -7,10 +6,17 @@ import com.example.demo.model.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -30,16 +36,67 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userService.register(user);
+    public ResponseEntity<?> register(@RequestBody User user) {
+        try {
+            User registeredUser = userService.register(user);
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", registeredUser.getId());
+            response.put("fullName", registeredUser.getFullName());
+            response.put("email", registeredUser.getEmail());
+            response.put("role", registeredUser.getRole());
+            response.put("message", "User registered successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginRequest request) {
-        Authentication auth = authManager.authenticate(
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        try {
+            // 1. Authenticate
+            Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(), request.getPassword()));
-        String token = jwtUtil.generateToken(auth.getName());
-        return new AuthResponse(token);
+                    request.getEmail(), 
+                    request.getPassword()
+                )
+            );
+
+            // 2. Load user from DB (Optional<User>)
+            Optional<User> userOpt = userService.findByEmail(request.getEmail());
+            if (!userOpt.isPresent()) {
+                Map<String, String> error = new HashMap<>();
+                error.put("error", "User not found");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+            }
+            User user = userOpt.get();
+
+            // 3. Generate JWT (email, role, userId)
+            String token = jwtUtil.generateToken(
+                user.getEmail(), 
+                user.getRole().toString(),  // ← FIXED: toString() not name()
+                user.getId()
+            );
+
+            // 4. Simple response (no setters needed)
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("userId", user.getId());
+            response.put("email", user.getEmail());
+            response.put("role", user.getRole().toString());
+
+            return ResponseEntity.ok(response);
+
+        } catch (BadCredentialsException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Invalid email or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Login failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
     }
 }
