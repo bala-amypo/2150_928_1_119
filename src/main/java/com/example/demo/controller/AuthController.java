@@ -55,7 +55,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            // 1. Authenticate 
+            // 1. Authenticate using AuthenticationManager
             Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                     request.getEmail(), 
@@ -63,13 +63,13 @@ public class AuthController {
                 )
             );
 
-            // 2. Use JWT with JUST email (SIMPLE - WORKS!)
-            String token = jwtUtil.generateToken(request.getEmail());
+            // 2. Generate JWT using YOUR WORKING method
+            String token = jwtUtil.generateToken(auth.getName());  // ✅ email only
 
-            // 3. Response
+            // 3. Success response
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
-            response.put("email", request.getEmail());
+            response.put("email", auth.getName());
             response.put("message", "Login successful");
 
             return ResponseEntity.ok(response);
@@ -80,7 +80,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
         } catch (Exception e) {
             Map<String, String> error = new HashMap<>();
-            error.put("error", "Login failed: " + e.getMessage());
+            error.put("error", "Login failed");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
